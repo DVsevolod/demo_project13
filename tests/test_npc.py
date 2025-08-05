@@ -1,6 +1,6 @@
 import unittest
 
-from demo_project13.core import (
+from core import (
     Bloodsmith,
     Revenant,
     Soulkeeper,
