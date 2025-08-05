@@ -1,4 +1,4 @@
-from demo_project13.core.user.user import User
+from core.user.user import User
 
 
 __all__ = [

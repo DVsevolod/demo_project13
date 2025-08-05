@@ -1,4 +1,4 @@
-from demo_project13.core.npc import (
+from core.npc import (
     AbstractHero,
     Bloodsmith,
     Revenant,
@@ -6,7 +6,7 @@ from demo_project13.core.npc import (
     Ork
 )
 
-from demo_project13.core.user import User
+from core.user import User
 
 
 __all__ = [

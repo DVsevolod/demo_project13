@@ -1,5 +1,5 @@
-from demo_project13.core.npc.heroes import AbstractHero, Bloodsmith, Revenant, Soulkeeper
-from demo_project13.core.npc.enemies import Ork
+from core.npc.heroes import AbstractHero, Bloodsmith, Revenant, Soulkeeper
+from core.npc.enemies import Ork
 
 
 __all__ = [
