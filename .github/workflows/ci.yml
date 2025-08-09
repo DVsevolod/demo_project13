@@ -1,4 +1,4 @@
-name: project13 deploy schema
+name: project13 CI/CD
 
 env:
   PYTHONPATH: ${{ github.workspace }}/demo_project13
@@ -34,19 +34,18 @@ jobs:
     if: github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/main'
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Setup python
-        uses: actions/setup-python@v4
+      - name: LogIn to DockerHub
+        uses: docker/login-action@v3
         with:
-          python-version: '3.10'
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Install dependencies
-        run: pip install -r requirements.txt
-
-      - name: Run server
-        run: echo "project13 tested and installed"
+      - name: Build and Push DockerImage
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/demo_project13:v1.0.0
 
   deploy-feature:
     needs: test
