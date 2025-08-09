@@ -70,7 +70,7 @@ jobs:
           SSH_PASS: ${{ secrets.SSH_PASS }}
           DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
         run:
-          sshpass -p "$SSH_PASS" ssh -o StrictHostNameChecking=no -p $SSH_PORT $SSH_USER@$SSH_HOST << EOF 
+          sshpass -p "$SSH_PASS" ssh -o StrictHostKeyChecking=no -p $SSH_PORT $SSH_USER@$SSH_HOST << EOF 
             echo "Pulling latest docker-image"
             docker pull $DOCKERHUB_USERNAME/demo_project13:v1.0.0
         
