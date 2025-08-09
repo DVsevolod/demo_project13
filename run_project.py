@@ -1,4 +1,11 @@
+from flask import Flask, jsonify
 
+
+app = Flask(__name__)
+
+@app.route('/')
+def index():
+    return jsonify({"msg": "Index Page"})
 
 if __name__ == '__main__':
-    print('server started!')
+    app.run(host='0.0.0.0', port=5000)
