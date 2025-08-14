@@ -62,14 +62,20 @@ jobs:
           sudo apt-get update
           sudo sudo apt-get install -y sshpass openssh-client
 
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo ${{ secrets.ORACLE_SSHKEY }} >> ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.ORACLE_HOST }} >> ~/.ssh/known_hosts
+
       - name: app deploy
         env:
-          ORACLE_IP: ${{ secrets.ORACLE_IP }}
-          ORACLE_USERNAME: ${{ secrets.ORACLE_USERNAME }}
+          ORACLE_HOST: ${{ secrets.ORACLE_HOST }}
           ORACLE_SSHKEY: ${{ secrets.ORACLE_SSHKEY }}
           DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
         run:
-          ssh -i $ORACLE_SSHKEY $ORACLE_USERNAME@$ORACLE_IP "
+          ssh $ORACLE_HOST "
             ./setup.sh
             docker stop demo_project13 || true &&
             docker rm demo_project13 || true &&
