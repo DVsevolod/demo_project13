@@ -80,7 +80,7 @@ jobs:
           ORACLE_SSHKEY: ${{ secrets.ORACLE_SSHKEY }}
           DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
         run:
-          ssh $ORACLE_HOST "
+          ssh -i ~/.ssh/id_rsa $ORACLE_HOST "
             ./setup.sh
             docker stop demo_project13 || true &&
             docker rm demo_project13 || true &&
