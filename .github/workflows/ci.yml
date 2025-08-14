@@ -63,13 +63,16 @@ jobs:
           sudo sudo apt-get install -y sshpass openssh-client
 
       - name: Setup SSH
+        env:
+          ORACLE_HOST: ${{ secrets.ORACLE_HOST }}
+          ORACLE_SSHKEY: ${{ secrets.ORACLE_SSHKEY }}
         run: |
           mkdir -p ~/.ssh
           cat << 'EOF' > ~/.ssh/id_rsa
-          ${{ secrets.ORACLE_SSHKEY }}
+          $ORACLE_SSHKEY
           EOF
           chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H ${{ secrets.ORACLE_HOST }} >> ~/.ssh/known_hosts
+          ssh-keyscan -H $ORACLE_HOST >> ~/.ssh/known_hosts
 
       - name: app deploy
         env:
