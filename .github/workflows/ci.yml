@@ -68,9 +68,7 @@ jobs:
           ORACLE_SSHKEY: ${{ secrets.ORACLE_SSHKEY }}
         run: |
           mkdir -p ~/.ssh
-          cat << 'EOF' > ~/.ssh/id_rsa
-          $ORACLE_SSHKEY
-          EOF
+          echo "$ORACLE_SSHKEY" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H $ORACLE_IP >> ~/.ssh/known_hosts
 
@@ -80,7 +78,7 @@ jobs:
           ORACLE_SSHKEY: ${{ secrets.ORACLE_SSHKEY }}
           DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
         run:
-          ssh -i ~/.ssh/id_rsa $ORACLE_HOST "
+          ssh $ORACLE_HOST "
             ./setup.sh
             docker stop demo_project13 || true &&
             docker rm demo_project13 || true &&
