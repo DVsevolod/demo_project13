@@ -64,7 +64,7 @@ jobs:
 
       - name: Setup SSH
         env:
-          ORACLE_HOST: ${{ secrets.ORACLE_HOST }}
+          ORACLE_IP: ${{ secrets.ORACLE_IP }}
           ORACLE_SSHKEY: ${{ secrets.ORACLE_SSHKEY }}
         run: |
           mkdir -p ~/.ssh
@@ -72,7 +72,7 @@ jobs:
           $ORACLE_SSHKEY
           EOF
           chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H $ORACLE_HOST >> ~/.ssh/known_hosts
+          ssh-keyscan -H $ORACLE_IP >> ~/.ssh/known_hosts
 
       - name: app deploy
         env:
