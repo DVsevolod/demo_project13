@@ -64,25 +64,18 @@ jobs:
 
       - name: app deploy
         env:
-          SSH_HOST: ${{ secrets.SSH_HOST }}
-          SSH_PORT: ${{ secrets.SSH_PORT }}
-          SSH_USER: ${{ secrets.SSH_USER }}
-          SSH_PASS: ${{ secrets.SSH_PASS }}
+          ORACLE_IP: ${{ secrets.ORACLE_IP }}
+          ORACLE_USERNAME: ${{ secrets.ORACLE_USERNAME }}
+          ORACLE_SSHKEY: ${{ secrets.ORACLE_SSHKEY }}
           DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
         run:
-          sshpass -p "$SSH_PASS" ssh -o StrictHostKeyChecking=no -p $SSH_PORT $SSH_USER@$SSH_HOST << EOF 
-            echo "Pulling latest docker-image"
-            docker pull $DOCKERHUB_USERNAME/demo_project13:v1.0.0
-        
-            echo "Trying to stop containers..."
-            docker stop demo_project13 || true
-            docker rm demo_project13 || true
-        
-            echo "New container - start"
-            docker run -d --name demo_project13 -p 5000:5000 $DOCKERHUB_USERNAME/demo_project13:latest
-        
-            echo "Done"
-          EOF
+          ssh $ORACLE_SSHKEY $ORACLE_USERNAME@$ORACLE_IP "
+            ./setup.sh
+            docker stop demo_project13 || true &&
+            docker rm demo_project13 || true &&
+            docker pull $DOCKERHUB_USERNAME/demo_project13:v1.0.0 &&
+            docker run -d --name demo_project13 -p 5000:5000 $DOCKERHUB_USERNAME/demo_project13:v1.0.0
+          "
 
   deploy-feature:
     needs: test
