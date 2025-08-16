@@ -91,7 +91,6 @@ jobs:
           DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
         run:
           ssh $ORACLE_HOST "
-            ./setup.sh
             docker-compose -f docker-compose.yml pull &&
             docker-compose -f docker-compose.yml up -d
           "
