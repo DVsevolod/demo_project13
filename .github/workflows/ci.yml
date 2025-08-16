@@ -41,12 +41,13 @@ jobs:
         env:
           ORACLE_SSHKEY: ${{ secrets.ORACLE_SSHKEY }}
           ORACLE_HOST: ${{ secrets.ORACLE_HOST }}
+          ORACLE_IP: ${{ secrets.ORACLE_IP }}
         run: |
           mkdir -p ~/.ssh
           echo "$ORACLE_SSHKEY" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H $ORACLE_IP >> ~/.ssh/known_hosts
           scp docker-compose.yml $ORACLE_HOST:docker-compose.yml
-            
 
       - name: LogIn to DockerHub
         uses: docker/login-action@v3
