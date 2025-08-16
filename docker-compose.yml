@@ -12,8 +12,9 @@ services:
     ports:
       - "5432:5432"
 
-  web:
+  demo_project13:
     image: vdanilintest/demo_project13:v1.0.0
+    container_name: demo_project13
     ports:
       - "5000:5000"
     environment:
