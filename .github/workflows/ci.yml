@@ -79,8 +79,8 @@ jobs:
         run:
           ssh $ORACLE_HOST "
             ./setup.sh
-            docker compose -f /path/to/docker-compose.yml pull &&
-            docker compose -f /path/to/docker-compose.yml up -d
+            docker-compose -f /path/to/docker-compose.yml pull &&
+            docker-compose -f /path/to/docker-compose.yml up -d
           "
 
   deploy-feature:
