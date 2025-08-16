@@ -13,7 +13,7 @@ services:
       - "5432:5432"
 
   web:
-    build: .
+    image: vdanilintest/demo_project13:v1.0.0
     ports:
       - "5000:5000"
     environment:
