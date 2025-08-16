@@ -2,8 +2,9 @@ import os
 
 from flask import Flask, jsonify, request
 
+from core import ErrorDB, ErrorRequest, parse_user_request, generate_user_obj, generate_hero_object
 from core.db import User, Hero, PostgresAdapter as db_adapter
-from core.db import database
+from core.db.models import database
 
 
 def create_app():
@@ -28,8 +29,9 @@ app = create_app()
 def index():
     return jsonify({"msg": "Index Page"})
 
+
 @app.route('/users', methods=['GET', 'POST'])
-def create_retrieve_user_view():
+def create_list_user_view():
     __post_request_obj = {
         "user_name": "test_user",
         "hero_name": "Testicula",
@@ -41,46 +43,87 @@ def create_retrieve_user_view():
     if request.method == 'GET':
         users = db_adapter.get_all_users()
         return jsonify([
-            {
-                "id": user.id,
-                "username": user.username,
-                "hero": {
-                    "name": user.hero.name,
-                    "hp": user.hero.hp,
-                    "level": user.hero.level,
-                    "exp": user.hero.exp
-                }
-            }
+            generate_user_obj(user)
             for user in users
         ])
     elif request.method == 'POST':
-        data = request.get_json()
-
-        user_name = data.get('user_name')
-        hero_name = data.get('hero_name')
-        hp = data.get('hp')
-        level = data.get('level')
-        exp = data.get('exp')
-
+        user_name, hero_name, hp, level, exp = parse_user_request(request.get_json())
         if None in [user_name, hero_name, hp, level, exp]:
-            return jsonify({
-                "error": f"user_name: {user_name}, hero_name: {hero_name}, hp: {hp}, level: {level}, exp: {exp}"
-            })
+            return jsonify(ErrorRequest.create_user_error(user_name, hero_name, hp, level, exp))
 
         user = db_adapter.create_user(user_name)
         hero = db_adapter.create_hero(user_id=user.id, name=hero_name, hp=hp, level=level, exp=exp)
         if not hero:
-            return jsonify({"error": "could not create hero"})
-        return jsonify({
-            "user": user.username,
-            "hero":
-                {
-                    "name": hero.name,
-                    "hp": hero.hp,
-                    "level": hero.level,
-                    "exp": hero.exp
-                }
-        })
+            return jsonify(ErrorDB.create_hero_error())
+        return jsonify(generate_user_obj(user))
+
+
+@app.route("/users/<int:user_id>", methods=['GET', 'PUT', 'DELETE'])
+def user_api_view(user_id):
+    if request.method == 'GET':
+        user = db_adapter.get_user(user_id)
+        if not user:
+            return jsonify(ErrorDB.user_not_found())
+
+        return jsonify(generate_user_obj(user))
+
+    elif request.method == 'PUT':
+        data = request.get_json()
+        user_name = data.pop('user_name')
+        if user_name is not None:
+            user = db_adapter.update_user(user_id, user_name=user_name)
+            if not user:
+                return jsonify(ErrorDB.user_not_found())
+
+        user = db_adapter.get_user(user_id)
+        if not user:
+            return jsonify(ErrorDB.user_not_found())
+
+        hero = db_adapter.update_hero(user.hero.id, **data)
+        if not hero:
+            return jsonify(ErrorDB.hero_not_found())
+
+        return jsonify(generate_user_obj(user))
+
+    elif request.method == 'DELETE':
+        user = db_adapter.get_user(user_id)
+        if not user:
+            return jsonify(ErrorDB.user_not_found())
+
+        is_hero_deleted = db_adapter.delete_hero(user.hero.id)
+        is_user_deleted = db_adapter.delete_user(user.id)
+
+        return jsonify({"user_deleted": is_user_deleted, "hero_deleted": is_hero_deleted})
+
+
+@app.route("/users/<int:user_id>/hero", methods=['GET', 'PUT', 'DELETE'])
+def hero_api_view(user_id):
+    if request.method == 'GET':
+        user = db_adapter.get_user(user_id)
+        if not user:
+            return jsonify(ErrorDB.user_not_found())
+
+        return jsonify(generate_hero_object(user.hero))
+    elif request.method == 'PUT':
+        user = db_adapter.get_user(user_id)
+        if not user:
+            return jsonify(ErrorDB.user_not_found())
+
+        hero = db_adapter.update_hero(user.hero.id, **request.get_json())
+        if not hero:
+            return jsonify(ErrorDB.hero_not_found())
+
+        return jsonify(generate_hero_object(user.hero))
+
+    elif request.method == 'DELETE':
+        user = db_adapter.get_user(user_id)
+        if not user:
+            return jsonify(ErrorDB.user_not_found())
+
+        if db_adapter.delete_hero(user.hero.id):
+            return jsonify({"success": f"deleted hero: id={user.hero.id}, name={user.hero.name}"})
+        else:
+            return jsonify(ErrorDB.hero_not_found())
 
 
 if __name__ == '__main__':
