@@ -75,15 +75,12 @@ jobs:
       - name: app deploy
         env:
           ORACLE_HOST: ${{ secrets.ORACLE_HOST }}
-          ORACLE_SSHKEY: ${{ secrets.ORACLE_SSHKEY }}
           DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
         run:
           ssh $ORACLE_HOST "
             ./setup.sh
-            docker stop demo_project13 || true &&
-            docker rm demo_project13 || true &&
-            docker pull $DOCKERHUB_USERNAME/demo_project13:v1.0.0 &&
-            docker run -d --name demo_project13 -p 5000:5000 $DOCKERHUB_USERNAME/demo_project13:v1.0.0
+            docker compose -f /path/to/docker-compose.yml pull &&
+            docker compose -f /path/to/docker-compose.yml up -d
           "
 
   deploy-feature:
