@@ -50,6 +50,7 @@ jobs:
           
           scp docker-compose.yml $ORACLE_HOST:docker-compose.yml
           scp Dockerfile $ORACLE_HOST:Dockerfile
+          scp requirements.txt $ORACLE_HOST:requirements.txt
 
       - name: LogIn to DockerHub
         uses: docker/login-action@v3
