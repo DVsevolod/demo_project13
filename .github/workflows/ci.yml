@@ -37,6 +37,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Update docker-compose
+        env:
+          ORACLE_SSHKEY: ${{ secrets.ORACLE_SSHKEY }}
+          ORACLE_HOST: ${{ secrets.ORACLE_HOST }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$ORACLE_SSHKEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          scp docker-compose.yml $ORACLE_HOST:docker-compose.yml
+            
+
       - name: LogIn to DockerHub
         uses: docker/login-action@v3
         with:
