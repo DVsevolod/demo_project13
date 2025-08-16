@@ -79,8 +79,3 @@ class Soulkeeper(AbstractHero):
             self.souls = 0
         else:
             print('Not enough souls!')
-
-
-if __name__ == '__main__':
-    bloodsmith = Soulkeeper('test-soulkeeper', hp=100, level=3)
-    print(bloodsmith._exp_threshold)

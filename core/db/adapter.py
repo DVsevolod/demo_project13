@@ -1,8 +1,6 @@
 from core.db.models import database, User, Hero
 
 
-
-
 class PostgresAdapter:
     @staticmethod
     def create_user(username):
