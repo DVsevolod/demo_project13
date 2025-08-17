@@ -1,7 +1,7 @@
 import json
 import unittest
 
-from run_project import app
+from demo_project13.run_project import app
 from core.db.models import database
 
 
