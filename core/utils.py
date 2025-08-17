@@ -12,7 +12,7 @@ def parse_user_request(data):
 def generate_user_obj(user):
     return {
         "id": user.id,
-        "username": user.username,
+        "user_name": user.username,
         "hero": {
             "name": user.hero.name,
             "hp": user.hero.hp,
