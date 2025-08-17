@@ -9,6 +9,7 @@ class AppTestCase(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.app = create_app(testing=True)
+        cls.app.config['TESTING'] = True
         cls.client = cls.app.test_client()
 
         with cls.app.app_context():
