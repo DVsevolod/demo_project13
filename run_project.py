@@ -7,12 +7,18 @@ from core.db import User, Hero, PostgresAdapter as db_adapter
 from core.db.models import database
 
 
-def create_app():
+def create_app(testing=False):
     app = Flask(__name__)
-    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv(
-        'DATABASE_URL',
-        "postgresql://postgres:psql_admin@localhost:5432/postgres"
-    )
+
+    if testing:
+        app.config['TESTING'] = True
+        app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///:memory:"
+    else:
+        app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv(
+            'DATABASE_URL',
+            "postgresql://postgres:psql_admin@localhost:5432/postgres"
+        )
+
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     database.init_app(app)

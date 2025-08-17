@@ -1,16 +1,14 @@
 import json
 import unittest
 
-from run_project import app
+from run_project import create_app
 from core.db.models import database
 
 
 class AppTestCase(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.app = app
-        cls.app.config['TESTING'] = True
-        cls.app.config['SQLALCHEMY_DATABASE_URL'] = "sqlite:///:memory:"  # in-memory DB
+        cls.app = create_app(testing=True)
         cls.client = cls.app.test_client()
 
         with cls.app.app_context():
