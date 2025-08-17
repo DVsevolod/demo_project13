@@ -31,14 +31,6 @@ def create_app(testing=False):
 
     @app.route('/users', methods=['GET', 'POST'])
     def create_list_user_view():
-        __test__post_request_obj = {
-            "username": "test_user",
-            "hero_name": "Testicula",
-            "hp": 100,
-            "level": 0,
-            "exp": 0
-        }
-
         if request.method == 'GET':
             users = db_adapter.get_all_users()
             return jsonify([

@@ -2,7 +2,7 @@
 
 def parse_user_request(data):
     username = data.get('username')
-    hero_name = data.get('heroname')
+    hero_name = data.get('hero_name')
     hp = data.get('hp')
     level = data.get('level')
     exp = data.get('exp')
