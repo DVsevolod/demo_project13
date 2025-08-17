@@ -32,7 +32,7 @@ def create_app(testing=False):
     @app.route('/users', methods=['GET', 'POST'])
     def create_list_user_view():
         __test__post_request_obj = {
-            "user_name": "test_user",
+            "username": "test_user",
             "hero_name": "Testicula",
             "hp": 100,
             "level": 0,
@@ -47,11 +47,11 @@ def create_app(testing=False):
             ]), 200
 
         elif request.method == 'POST':
-            user_name, hero_name, hp, level, exp = parse_user_request(request.get_json())
-            if None in [user_name, hero_name, hp, level, exp]:
-                return jsonify(ErrorRequest.create_user_error(user_name, hero_name, hp, level, exp)), 400
+            username, hero_name, hp, level, exp = parse_user_request(request.get_json())
+            if None in [username, hero_name, hp, level, exp]:
+                return jsonify(ErrorRequest.create_user_error(username, hero_name, hp, level, exp)), 400
 
-            user = db_adapter.create_user(user_name)
+            user = db_adapter.create_user(username)
             hero = db_adapter.create_hero(user_id=user.id, name=hero_name, hp=hp, level=level, exp=exp)
             if not hero:
                 return jsonify(ErrorDB.create_hero_error()), 400
@@ -68,9 +68,9 @@ def create_app(testing=False):
 
         elif request.method == 'PUT':
             data = request.get_json()
-            user_name = data.pop('user_name')
-            if user_name is not None:
-                user = db_adapter.update_user(user_id, user_name=user_name)
+            username = data.pop('username')
+            if username is not None:
+                user = db_adapter.update_user(user_id, username=username)
                 if not user:
                     return jsonify(ErrorDB.user_not_found()), 404
 

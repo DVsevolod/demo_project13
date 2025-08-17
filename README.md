@@ -1,5 +1,8 @@
 Description:
 
-This is a simple Python project created for the purpose of learning and practicing continuous integration (CI) and continuous deployment (CD) workflows using GitHub Actions.
+This is a simple Python project created for the purpose of practicing continuous integration (CI) and continuous deployment (CD) workflows using GitHub Actions.
 
-It includes a basic Python module, unit tests with unittest, and a GitHub Actions pipeline that runs tests automatically and can be configured to deploy (e.g., to GitHub Pages, a remote server, or a test environment).
+It includes:
+- Python web-app; 
+- unit tests (Unittest); 
+- GitHub Actions Main Pipeline: tests -> DockerHub (build image, push) -> Remote Server (pull image, run)

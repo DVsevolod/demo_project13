@@ -24,11 +24,11 @@ class AppTestCase(unittest.TestCase):
                     "name": "TestHero"
                 },
                 "id": 1,
-                "user_name": "test_user"
+                "username": "test_user"
             }
         ]
         cls._users__post = {
-            "user_name": "test_user",
+            "username": "test_user",
             "hero_name": "TestHero",
             "hp": 100,
             "level": 0,
@@ -42,7 +42,7 @@ class AppTestCase(unittest.TestCase):
                 "name": "TestHero"
             },
             "id": 1,
-            "user_name": "test_user"
+            "username": "test_user"
         }
         cls._user__put = {
             "hero": {
@@ -52,7 +52,7 @@ class AppTestCase(unittest.TestCase):
                 "name": "Senor TestHero"
             },
             "id": 1,
-            "user_name": "test_user"
+            "username": "test_user"
         }
         cls._user__delete = {
             "user_deleted": True,
@@ -80,19 +80,6 @@ class AppTestCase(unittest.TestCase):
         self.assertEqual(response.get_json(), self._user__get)
 
     def test_get_users(self):
-        __test__get_response_obj = [
-            {
-                "hero": {
-                    "exp": 0,
-                    "hp": 100,
-                    "level": 0,
-                    "name": "TestHero"
-                },
-                "id": 1,
-                "username": "test_user"
-            }
-        ]
-
         response = self.client.get('/users')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.get_json(), self._users__get)
@@ -106,7 +93,7 @@ class AppTestCase(unittest.TestCase):
         response = self.client.put(
             '/users/1',
             data=json.dumps({
-                "user_name": "test_user",
+                "username": "test_user",
                 "name": "Senor TestHero",
                 "level": 1
             }),
