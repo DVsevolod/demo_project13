@@ -22,8 +22,9 @@ def create_app(testing=False):
 
     database.init_app(app)
 
-    with app.app_context():
-        database.create_all()  # create tables
+    if testing:
+        with app.app_context():
+            database.create_all()  # create tables
 
     return app
 
