@@ -1,6 +1,8 @@
+import time
 import os
 
 from flask import Flask, jsonify, request
+from sqlalchemy.exc import OperationalError
 
 from core import ErrorDB, ErrorRequest, parse_user_request, generate_user_obj, generate_hero_object
 from core.db import User, Hero, PostgresAdapter as db_adapter
@@ -23,7 +25,13 @@ def create_app(testing=False):
     database.init_app(app)
 
     with app.app_context():
-        database.create_all()  # create tables
+        for i in range(10):
+            try:
+                database.create_all()
+                break
+            except OperationalError:
+                print("Database not ready, retrying...")
+                time.sleep(3)
 
     @app.route('/')
     def index():
