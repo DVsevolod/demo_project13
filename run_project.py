@@ -15,10 +15,7 @@ def create_app(testing=False):
     if testing:
         app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///:memory:"
     else:
-        app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv(
-            'DATABASE_URL',
-            "postgresql://postgres:psql_admin@localhost:5432/postgres"
-        )
+        app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
 
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
