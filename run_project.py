@@ -11,9 +11,9 @@ from core import (
     generate_user_obj,
     parse_user_request,
 )
-from core.db import Hero
-from core.db import PostgresAdapter as db_adapter  # noqa: F401
-from core.db import User
+from core.db import Hero # noqa: F401
+from core.db import PostgresAdapter as db_adapter
+from core.db import User # noqa: F401
 from core.db.models import database
 
 
