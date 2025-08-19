@@ -1,23 +1,18 @@
 import unittest
 
-from core import (
-    Bloodsmith,
-    Revenant,
-    Soulkeeper,
-    Ork
-)
+from core import Bloodsmith, Ork, Revenant, Soulkeeper
 
 
 class TestNPC(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.abc_hero = Bloodsmith('test-abc-hero', hp=100, level=1)
-        cls.bloodsmith = Bloodsmith('test-bloodsmith', hp=130, level=2)
-        cls.revenant = Revenant('test-revenant', hp=100, level=3)
-        cls.soulkeeper = Soulkeeper('test-soulkeeper', hp=100, level=3)
+        cls.abc_hero = Bloodsmith("test-abc-hero", hp=100, level=1)
+        cls.bloodsmith = Bloodsmith("test-bloodsmith", hp=130, level=2)
+        cls.revenant = Revenant("test-revenant", hp=100, level=3)
+        cls.soulkeeper = Soulkeeper("test-soulkeeper", hp=100, level=3)
 
     def setUp(self):
-        self.enemy = Ork('Filthy Grook', hp=50, damage=30)
+        self.enemy = Ork("Filthy Grook", hp=50, damage=30)
 
     def test_base_npc_functions(self):
         self.assertEqual(self.abc_hero.hp, 100)

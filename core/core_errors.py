@@ -1,5 +1,3 @@
-
-
 class ErrorDB:
     @staticmethod
     def user_not_found():
@@ -18,5 +16,5 @@ class ErrorRequest:
     @staticmethod
     def create_user_error(user_name, hero_name, hp, level, exp):
         return {
-                "error": f"user_name: {user_name}, hero_name: {hero_name}, hp: {hp}, level: {level}, exp: {exp}"
-            }
+            "error": f"user_name: {user_name}, hero_name: {hero_name}, hp: {hp}, level: {level}, exp: {exp}"
+        }

@@ -48,7 +48,7 @@ class Revenant(AbstractHero):
             target.hp -= 30
             self.curse -= 20
         else:
-            print('Not enough curse!')
+            print("Not enough curse!")
 
 
 class Bloodsmith(AbstractHero):
@@ -60,7 +60,7 @@ class Bloodsmith(AbstractHero):
         if self.is_alive():
             target.hp -= 25
         else:
-            print('Died of blood loss')
+            print("Died of blood loss")
 
 
 class Soulkeeper(AbstractHero):
@@ -75,7 +75,7 @@ class Soulkeeper(AbstractHero):
 
     def use_ability(self, target):
         if self.souls:
-            target.hp -= (self.souls + 3)**2
+            target.hp -= (self.souls + 3) ** 2
             self.souls = 0
         else:
-            print('Not enough souls!')
+            print("Not enough souls!")

@@ -1,4 +1,4 @@
-from core.db.models import database, User, Hero
+from core.db.models import Hero, User, database
 
 
 class PostgresAdapter:
