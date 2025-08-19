@@ -105,7 +105,7 @@ jobs:
           "
 
   flow-feature:
-    needs: test
+    needs: testing-linting
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/heads/feature/')
 
