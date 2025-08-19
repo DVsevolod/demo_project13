@@ -5,7 +5,7 @@ env:
 
 on:
   push:
-    branches: [ main, dev, 'feature/**' ]
+    branches: [ main, dev, 'feature/**', 'hotfix/**' ]
   pull_request:
     branches: [ main, dev ]
 
@@ -28,10 +28,10 @@ jobs:
       - name: Run tests
         run: python -m unittest discover -s tests -p "test_*.py"
 
-  prepare-main-dev:
+  build:
     needs: test
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/hotfix/')
 
     steps:
       - name: Checkout code
@@ -64,10 +64,10 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/demo_project13:v1.0.0
 
-  deploy-main-dev:
-    needs: prepare-main-dev
+  deploy-prod:
+    needs: build
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main'
 
     steps:
       - name: Install SSH Client
@@ -95,7 +95,7 @@ jobs:
             docker compose -p demo_project13 -f docker-compose.yml up -d 
           "
 
-  deploy-feature:
+  flow-feature:
     needs: test
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/heads/feature/')
