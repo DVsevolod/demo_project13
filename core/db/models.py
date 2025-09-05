@@ -1,3 +1,4 @@
+from flask import jsonify
 from flask_sqlalchemy import SQLAlchemy
 
 database = SQLAlchemy()
@@ -10,6 +11,21 @@ class User(database.Model):
 
     def __repr__(self):
         return f"<User: {self.username}>\n<Hero: {self.hero}>"
+
+    def as_json(self):
+        return jsonify(self.as_dict())
+
+    def as_dict(self):
+        return {
+            "id": self.id,
+            "username": self.username,
+            "hero": {
+                "name": self.hero.name,
+                "hp": self.hero.hp,
+                "level": self.hero.level,
+                "exp": self.hero.exp,
+            },
+        }
 
 
 class Hero(database.Model):
@@ -26,3 +42,14 @@ class Hero(database.Model):
 
     def __repr__(self):
         return f"<Hero: hp={self.hp}, level={self.level}, exp={self.exp}>"
+
+    def as_json(self):
+        return jsonify(self.as_dict())
+
+    def as_dict(self):
+        return {
+            "name": self.name,
+            "hp": self.hp,
+            "level": self.level,
+            "exp": self.exp
+        }

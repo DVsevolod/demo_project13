@@ -1,18 +1,13 @@
-from core.core_errors import ErrorDB, ErrorRequest
+from core.errors import ErrorManager
 from core.npc import AbstractHero, Bloodsmith, Ork, Revenant, Soulkeeper
-from core.user import User
-from core.utils import generate_hero_object, generate_user_obj, parse_user_request
+from core.utils import Parser
 
 __all__ = [
-    "ErrorDB",
-    "ErrorRequest",
+    "ErrorManager",
     "AbstractHero",
     "Bloodsmith",
     "Revenant",
     "Soulkeeper",
-    "User",
     "Ork",
-    "parse_user_request",
-    "generate_user_obj",
-    "generate_hero_object",
+    "Parser"
 ]

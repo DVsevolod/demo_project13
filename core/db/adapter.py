@@ -18,7 +18,7 @@ class PostgresAdapter:
 
     @staticmethod
     def get_user(user_id):
-        return User.query.get(user_id)
+        return database.session.get(User, user_id)
 
     @staticmethod
     def get_all_users():
@@ -34,7 +34,7 @@ class PostgresAdapter:
 
     @staticmethod
     def update_user(user_id, **kwargs):
-        user = User.query.get(user_id)
+        user = database.session.get(User, user_id)
         if not user:
             return None
         for key, value in kwargs.items():
@@ -44,7 +44,7 @@ class PostgresAdapter:
 
     @staticmethod
     def update_hero(hero_id, **kwargs):
-        hero = Hero.query.get(hero_id)
+        hero = database.session.get(Hero, hero_id)
         if not hero:
             return None
         for key, value in kwargs.items():
@@ -54,7 +54,7 @@ class PostgresAdapter:
 
     @staticmethod
     def delete_user(user_id):
-        user = User.query.get(user_id)
+        user = database.session.get(User, user_id)
         if not user:
             return False
         database.session.delete(user)
@@ -63,7 +63,7 @@ class PostgresAdapter:
 
     @staticmethod
     def delete_hero(hero_id):
-        hero = Hero.query.get(hero_id)
+        hero = database.session.get(Hero, hero_id)
         if not hero:
             return False
         database.session.delete(hero)
