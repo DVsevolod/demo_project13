@@ -19,31 +19,21 @@ class AppTestCase(unittest.TestCase):
             {
                 "hero": {"exp": 0, "hp": 100, "level": 0, "name": "TestHero"},
                 "id": 1,
-                "username": "test_user"
+                "username": "test_user",
             }
         ]
         cls._user__obj = {
             "hero": {"exp": 0, "hp": 100, "level": 0, "name": "TestHero"},
             "id": 1,
-            "username": "test_user"
+            "username": "test_user",
         }
         cls._user__obj_upd = {
             "hero": {"exp": 0, "hp": 100, "level": 1, "name": "Senor TestHero"},
             "id": 1,
-            "username": "test_user"
+            "username": "test_user",
         }
-        cls._hero__obj = {
-            "name": "TestHero",
-            "hp": 100,
-            "level": 0,
-            "exp": 0
-        }
-        cls._hero__obj_upd = {
-            "name": "Senor TestHero",
-            "hp": 100,
-            "level": 1,
-            "exp": 0
-        }
+        cls._hero__obj = {"name": "TestHero", "hp": 100, "level": 0, "exp": 0}
+        cls._hero__obj_upd = {"name": "Senor TestHero", "hp": 100, "level": 1, "exp": 0}
 
     @classmethod
     def tearDownClass(cls):
@@ -79,11 +69,7 @@ class AppTestCase(unittest.TestCase):
         response = self.client.put(
             "/users/1",
             data=json.dumps(
-                {
-                    "level": 1,
-                    "name": "Senor TestHero",
-                    "username": "test_user"
-                }
+                {"level": 1, "name": "Senor TestHero", "username": "test_user"}
             ),
             content_type="application/json",
         )
@@ -98,13 +84,9 @@ class AppTestCase(unittest.TestCase):
     def test_update_hero(self):
         response = self.client.put(
             "/users/1/hero",
-            data=json.dumps(
-                {
-                    "level": 1,
-                    "name": "Senor TestHero"
-                }
-            ),
-            content_type="application/json",)
+            data=json.dumps({"level": 1, "name": "Senor TestHero"}),
+            content_type="application/json",
+        )
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.get_json(), self._hero__obj_upd)
 

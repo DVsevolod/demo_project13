@@ -9,5 +9,5 @@ __all__ = [
     "Revenant",
     "Soulkeeper",
     "Ork",
-    "Parser"
+    "Parser",
 ]

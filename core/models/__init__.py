@@ -1,7 +1,3 @@
-from core.models.base_models import User, Hero
+from core.models.base_models import Hero, User
 
-
-__all__ = [
-    'User',
-    'Hero'
-]
+__all__ = ["User", "Hero"]

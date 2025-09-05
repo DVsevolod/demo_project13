@@ -5,19 +5,17 @@ import time
 from flask import Flask, jsonify, request
 from sqlalchemy.exc import OperationalError
 
-from core import (
-    ErrorManager as Error,
-    Parser
+from core import ErrorManager as Error
+from core import Parser
+from core.db import (
+    Hero,  # noqa: F401
+    User,  # noqa: F401
 )
-from core.db import Hero # noqa: F401
 from core.db import PostgresAdapter as db_adapter
-from core.db import User # noqa: F401
 from core.db.models import database
 
-
 logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s [%(levelname)s] %(message)s"
+    level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s"
 )
 
 
@@ -26,10 +24,12 @@ def create_app(testing=False):
 
     if testing:
         app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///:memory:"
-        logging.info('App mode: testing')
+        logging.info("App mode: testing")
     else:
-        app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL", "sqlite:///:memory:")
-        logging.info('App mode: prod')
+        app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv(
+            "DATABASE_URL", "sqlite:///:memory:"
+        )
+        logging.info("App mode: prod")
 
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
@@ -68,7 +68,7 @@ def create_app(testing=False):
                 name=user_model.hero.name,
                 hp=user_model.hero.hp,
                 level=user_model.hero.level,
-                exp=user_model.hero.exp
+                exp=user_model.hero.exp,
             )
 
             if not hero:
@@ -95,7 +95,7 @@ def create_app(testing=False):
                 logging.error(Error.Request.invalid_data(raw_data))
                 return Error.Request.invalid_data_json(raw_data), 400
 
-            hero = db_adapter.update_hero(user.hero.id, **data.get('hero'))
+            hero = db_adapter.update_hero(user.hero.id, **data.get("hero"))
             if not hero:
                 logging.error(Error.DB.hero_not_found)
                 return Error.DB.hero_not_found_json(), 404
@@ -110,7 +110,12 @@ def create_app(testing=False):
             is_hero_deleted = db_adapter.delete_hero(user.hero.id)
             is_user_deleted = db_adapter.delete_user(user.id)
 
-            return jsonify({"user_deleted": is_user_deleted, "hero_deleted": is_hero_deleted}), 200
+            return (
+                jsonify(
+                    {"user_deleted": is_user_deleted, "hero_deleted": is_hero_deleted}
+                ),
+                200,
+            )
 
     @app.route("/users/<int:user_id>/hero", methods=["GET", "PUT", "DELETE"])
     def hero_api_view(user_id):
@@ -138,7 +143,9 @@ def create_app(testing=False):
 
         elif request.method == "DELETE":
             if db_adapter.delete_hero(user.hero.id):
-                logging.info(f"Hero: id={user.hero.id}, name={user.hero.name} was deleted")
+                logging.info(
+                    f"Hero: id={user.hero.id}, name={user.hero.name} was deleted"
+                )
                 return jsonify({"hero_deleted": True}), 200
             else:
                 logging.error(Error.DB.hero_not_found)

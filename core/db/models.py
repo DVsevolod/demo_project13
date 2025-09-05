@@ -47,9 +47,4 @@ class Hero(database.Model):
         return jsonify(self.as_dict())
 
     def as_dict(self):
-        return {
-            "name": self.name,
-            "hp": self.hp,
-            "level": self.level,
-            "exp": self.exp
-        }
+        return {"name": self.name, "hp": self.hp, "level": self.level, "exp": self.exp}

@@ -1,9 +1,10 @@
-[tool.ruff.lint]
-max-line-length = 120
+[tool.ruff]
+line-length = 120
 target-version = "py311"
+
+[tool.ruff.lint]
 select = ["E", "F", "W", "I"]
 ignore = ["E501"]
 
 [tool.black]
 max-line-length = 120
-target-version = ["py311"]

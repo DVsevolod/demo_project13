@@ -20,16 +20,20 @@ class ErrorDB:
 
 
 class ErrorRequest:
-    invalid_data_obj = {"error": f"invalid data: "}
+    invalid_data_obj = {"error": "invalid data: "}
 
     @classmethod
     def invalid_data_json(cls, data):
-        cls.invalid_data_obj["error"] = list(cls.invalid_data_obj.values())[0] + str(data)
+        cls.invalid_data_obj["error"] = list(cls.invalid_data_obj.values())[0] + str(
+            data
+        )
         return jsonify(cls.invalid_data_obj)
 
     @classmethod
     def invalid_data(cls, data):
-        cls.invalid_data_obj["error"] = list(cls.invalid_data_obj.values())[0] + str(data)
+        cls.invalid_data_obj["error"] = list(cls.invalid_data_obj.values())[0] + str(
+            data
+        )
         return cls.invalid_data_obj
 
 

@@ -17,13 +17,13 @@ class Parser:
     def user_update(data):
         upd_data = {}
 
-        username = data.get('username')
+        username = data.get("username")
         if username is not None:
-            upd_data['username'] = username
+            upd_data["username"] = username
 
         hero = Parser.hero_update(data)
         if hero is not None:
-            upd_data['hero'] = hero
+            upd_data["hero"] = hero
             return upd_data
 
         return
@@ -32,13 +32,13 @@ class Parser:
     def hero_update(data):
         upd_data = {}
         for key, val in data.items():
-            if key == 'name':
+            if key == "name":
                 upd_data[key] = val
-            if key == 'level':
+            if key == "level":
                 upd_data[key] = val
-            if key == 'hp':
+            if key == "hp":
                 upd_data[key] = val
-            if key == 'exp':
+            if key == "exp":
                 upd_data[key] = val
 
         if upd_data:
